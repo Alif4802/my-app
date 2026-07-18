@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 import BookingForm from './BookingForm';
 import { initializeTimes, updateTimes, fetchAPI, submitAPI } from './Main';
@@ -75,5 +75,59 @@ test('BookingForm submit button is disabled if form is invalid', () => {
   render(<BookingForm />);
   
   const submitButton = screen.getByDisplayValue('Make Your reservation');
+  expect(submitButton).toBeDisabled();
+});
+
+test('BookingForm submit button is enabled and triggers submit if form inputs are valid', () => {
+  const mockSubmitForm = jest.fn();
+  const mockAvailableTimes = ['17:00', '18:00'];
+  
+  render(
+    <BookingForm 
+      availableTimes={mockAvailableTimes} 
+      submitForm={mockSubmitForm} 
+    />
+  );
+  
+  const dateInput = screen.getByLabelText(/Choose date/i);
+  const timeSelect = screen.getByLabelText(/Choose time/i);
+  const guestsInput = screen.getByLabelText(/Number of guests/i);
+  const occasionSelect = screen.getByLabelText(/Occasion/i);
+  const submitButton = screen.getByDisplayValue('Make Your reservation');
+
+  // Populate valid entries
+  fireEvent.change(dateInput, { target: { value: '2026-07-20' } });
+  fireEvent.change(timeSelect, { target: { value: '18:00' } });
+  fireEvent.change(guestsInput, { target: { value: '4' } });
+  fireEvent.change(occasionSelect, { target: { value: 'Anniversary' } });
+
+  // Now the form is valid, submit button should be enabled
+  expect(submitButton).not.toBeDisabled();
+
+  // Submit the form
+  fireEvent.click(submitButton);
+  expect(mockSubmitForm).toHaveBeenCalledWith({
+    date: '2026-07-20',
+    time: '18:00',
+    guests: 4,
+    occasion: 'Anniversary'
+  });
+});
+
+test('BookingForm displays errors and disables submit when guests count is out of bounds', () => {
+  render(<BookingForm availableTimes={['17:00']} />);
+  
+  const dateInput = screen.getByLabelText(/Choose date/i);
+  const guestsInput = screen.getByLabelText(/Number of guests/i);
+  const submitButton = screen.getByDisplayValue('Make Your reservation');
+
+  // Input valid date, but invalid guests
+  fireEvent.change(dateInput, { target: { value: '2026-07-20' } });
+  fireEvent.change(guestsInput, { target: { value: '12' } });
+  fireEvent.blur(guestsInput);
+
+  // Assert error message and disabled button
+  const errorMessage = screen.getByText(/Number of guests cannot exceed 10/i);
+  expect(errorMessage).toBeInTheDocument();
   expect(submitButton).toBeDisabled();
 });

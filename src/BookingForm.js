@@ -216,6 +216,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
         }}
         value="Make Your reservation" 
         disabled={!isFormValid}
+        aria-label="On Click"
       />
     </form>
   );
