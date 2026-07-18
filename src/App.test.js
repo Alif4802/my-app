@@ -56,3 +56,24 @@ test('fetchAPI filters out already booked slots from localStorage (reading from 
   expect(updatedTimes).not.toContain(slotToBook);
   expect(updatedTimes.length).toBe(baseTimes.length - 1);
 });
+
+test('BookingForm HTML5 validation attributes exist', () => {
+  render(<BookingForm />);
+  
+  const dateInput = screen.getByLabelText(/Choose date/i);
+  expect(dateInput).toHaveAttribute('required');
+  expect(dateInput).toHaveAttribute('type', 'date');
+
+  const guestsInput = screen.getByLabelText(/Number of guests/i);
+  expect(guestsInput).toHaveAttribute('required');
+  expect(guestsInput).toHaveAttribute('type', 'number');
+  expect(guestsInput).toHaveAttribute('min', '1');
+  expect(guestsInput).toHaveAttribute('max', '10');
+});
+
+test('BookingForm submit button is disabled if form is invalid', () => {
+  render(<BookingForm />);
+  
+  const submitButton = screen.getByDisplayValue('Make Your reservation');
+  expect(submitButton).toBeDisabled();
+});
