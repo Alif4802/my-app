@@ -4,6 +4,7 @@ import App from './App';
 import BookingForm from './BookingForm';
 import LoginPage from './LoginPage';
 import { initializeTimes, updateTimes, fetchAPI, submitAPI } from './Main';
+import Nav from './Nav';
 
 test('renders App and logo heading', () => {
   render(<App />);
@@ -189,3 +190,26 @@ test('LoginPage submit button matches validation state', () => {
   // Button should now be enabled
   expect(submitButton).not.toBeDisabled();
 });
+
+test('Nav hamburger menu toggles menu visibility', () => {
+  render(
+    <BrowserRouter>
+      <Nav />
+    </BrowserRouter>
+  );
+  
+  const hamburgerButton = screen.getByLabelText(/Toggle navigation menu/i);
+  const navLinksContainer = screen.getByRole('list');
+
+  // Initially, it should not have the 'active' class
+  expect(navLinksContainer).not.toHaveClass('active');
+
+  // Click to open
+  fireEvent.click(hamburgerButton);
+  expect(navLinksContainer).toHaveClass('active');
+
+  // Click to close
+  fireEvent.click(hamburgerButton);
+  expect(navLinksContainer).not.toHaveClass('active');
+});
+

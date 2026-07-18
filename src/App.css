@@ -639,6 +639,50 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Navigation Container */
+.nav-container {
+  grid-column: 4 / 13;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Hamburger Menu Button */
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  cursor: pointer;
+  padding: 0;
+  z-index: 150;
+}
+
+.hamburger-menu .bar {
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-green, #495e57);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Animations for Hamburger to Close X icon */
+.hamburger-menu .bar.open:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.hamburger-menu .bar.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu .bar.open:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 992px) {
   .nav-logo-container {
@@ -679,18 +723,32 @@
 @media (max-width: 768px) {
   .nav-bar {
     padding: 0.8rem 0;
+    position: relative;
+  }
+  .nav-container {
+    grid-column: 5 / 13;
+    justify-content: flex-end;
+  }
+  .hamburger-menu {
+    display: flex;
   }
   .nav-links-container {
-    display: none; /* In a real production app we'd build a burger menu, but for the assignment we follow mockup grid layout or wrap links */
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-top: 1px solid var(--highlight-light);
+    gap: 1.5rem;
+    z-index: 99;
   }
-  /* For presentation purposes on mobile, let's keep the nav visible as wrap */
-  .nav-links-container-mobile {
+  .nav-links-container.active {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    grid-column: 1 / 13;
-    gap: 0.8rem;
-    margin-top: 1rem;
   }
   .hero-left {
     grid-column: 1 / 13;

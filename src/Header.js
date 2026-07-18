@@ -4,7 +4,7 @@ import Nav from './Nav';
 
 function Header({ currentUser, onLogout }) {
   return (
-    <nav className="nav-bar">
+    <header className="nav-bar">
       <div className="grid-12">
         <div className="nav-logo-container">
           <a href="/" style={{ textDecoration: 'none' }}>
@@ -13,7 +13,7 @@ function Header({ currentUser, onLogout }) {
         </div>
         <Nav currentUser={currentUser} onLogout={onLogout} />
       </div>
-    </nav>
+    </header>
   );
 }
 
