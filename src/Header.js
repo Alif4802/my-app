@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from './Logo';
 import Nav from './Nav';
 
-function Header() {
+function Header({ currentUser, onLogout }) {
   return (
     <nav className="nav-bar">
       <div className="grid-12">
@@ -11,7 +11,7 @@ function Header() {
             <Logo type="secondary" mode="color" height="40" />
           </a>
         </div>
-        <Nav />
+        <Nav currentUser={currentUser} onLogout={onLogout} />
       </div>
     </nav>
   );

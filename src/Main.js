@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './HomePage';
 import BookingPage from './BookingPage';
 import ConfirmedBooking from './ConfirmedBooking';
+import LoginPage from './LoginPage';
 
 // Mock fetchAPI local implementation integrated with localStorage persistence
 export const fetchAPI = (date) => {
@@ -85,7 +86,7 @@ export const initializeTimes = () => {
   return fetchAPI(today);
 };
 
-function Main() {
+function Main({ currentUser, onLogin }) {
   const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
   const navigate = useNavigate();
 
@@ -112,6 +113,7 @@ function Main() {
           } 
         />
         <Route path="/confirmed" element={<ConfirmedBooking />} />
+        <Route path="/login" element={<LoginPage onLogin={onLogin} />} />
       </Routes>
     </main>
   );

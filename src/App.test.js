@@ -1,6 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import BookingForm from './BookingForm';
+import LoginPage from './LoginPage';
 import { initializeTimes, updateTimes, fetchAPI, submitAPI } from './Main';
 
 test('renders App and logo heading', () => {
@@ -130,4 +132,60 @@ test('BookingForm displays errors and disables submit when guests count is out o
   const errorMessage = screen.getByText(/Number of guests cannot exceed 10/i);
   expect(errorMessage).toBeInTheDocument();
   expect(submitButton).toBeDisabled();
+});
+
+test('LoginPage displays errors for invalid input values', () => {
+  render(
+    <BrowserRouter>
+      <LoginPage />
+    </BrowserRouter>
+  );
+
+  // Switch to sign up tab
+  const signUpTabButton = screen.getByText('Sign Up');
+  fireEvent.click(signUpTabButton);
+
+  const nameInput = screen.getByLabelText(/Full Name/i);
+  const emailInput = screen.getByLabelText(/Email Address/i);
+  const passwordInput = screen.getByLabelText(/^Password/i); // Only match start-of-line Password, not Confirm Password
+  const confirmPasswordInput = screen.getByLabelText(/Confirm Password/i);
+
+  // Input invalid values
+  fireEvent.change(nameInput, { target: { value: 'A' } }); // Short name
+  fireEvent.blur(nameInput);
+  fireEvent.change(emailInput, { target: { value: 'invalid-email' } }); // Bad email format
+  fireEvent.blur(emailInput);
+  fireEvent.change(passwordInput, { target: { value: '123' } }); // Short password
+  fireEvent.blur(passwordInput);
+  fireEvent.change(confirmPasswordInput, { target: { value: '123456' } }); // Mismatched passwords
+  fireEvent.blur(confirmPasswordInput);
+
+  // Assert validation errors are visible
+  expect(screen.getByText(/Name must be at least 2 characters/i)).toBeInTheDocument();
+  expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
+  expect(screen.getByText(/Password must be at least 6 characters/i)).toBeInTheDocument();
+  expect(screen.getByText(/Passwords do not match/i)).toBeInTheDocument();
+});
+
+test('LoginPage submit button matches validation state', () => {
+  const mockLogin = jest.fn();
+  const { container } = render(
+    <BrowserRouter>
+      <LoginPage onLogin={mockLogin} />
+    </BrowserRouter>
+  );
+
+  // Login form is empty initially -> button should be disabled
+  const submitButton = container.querySelector('button[type="submit"]');
+  expect(submitButton).toBeDisabled();
+
+  // Input valid credentials
+  const emailInput = screen.getByLabelText(/Email Address/i);
+  const passwordInput = screen.getByLabelText(/Password/i);
+
+  fireEvent.change(emailInput, { target: { value: 'valid@mail.com' } });
+  fireEvent.change(passwordInput, { target: { value: '123456' } });
+
+  // Button should now be enabled
+  expect(submitButton).not.toBeDisabled();
 });
