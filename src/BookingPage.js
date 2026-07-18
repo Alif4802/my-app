@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import OccasionDropdown from './OccasionDropdown';
+import BookingForm from './BookingForm';
 
-function BookingPage() {
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('17:00');
-  const [guests, setGuests] = useState('2');
-  const [occasion, setOccasion] = useState('');
+function BookingPage({ availableTimes, dispatch }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Booking details:', { date, time, guests, occasion });
+  const handleFormSubmit = (data) => {
+    setBookingData(data);
     setIsSubmitted(true);
   };
 
@@ -34,61 +30,13 @@ function BookingPage() {
               <p style={{ textAlign: 'center', color: '#666666', marginBottom: '2.5rem', fontSize: '15px' }}>
                 Please fill out the form below to secure your table at Little Lemon.
               </p>
-              
-              <form className="reservation-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="res-date">Choose Date</label>
-                  <input 
-                    type="date" 
-                    id="res-date" 
-                    className="form-input"
-                    required 
-                    value={date} 
-                    onChange={(e) => setDate(e.target.value)} 
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label" htmlFor="res-time">Choose Time</label>
-                  <select 
-                    id="res-time" 
-                    className="form-input"
-                    value={time} 
-                    onChange={(e) => setTime(e.target.value)}
-                  >
-                    <option value="17:00">5:00 PM</option>
-                    <option value="18:00">6:00 PM</option>
-                    <option value="19:00">7:00 PM</option>
-                    <option value="20:00">8:00 PM</option>
-                    <option value="21:00">9:00 PM</option>
-                    <option value="22:00">10:00 PM</option>
-                  </select>
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label" htmlFor="guests">Number of Guests</label>
-                  <input 
-                    type="number" 
-                    placeholder="1" 
-                    min="1" 
-                    max="10" 
-                    id="guests" 
-                    className="form-input"
-                    required
-                    value={guests} 
-                    onChange={(e) => setGuests(e.target.value)} 
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">Occasion</label>
-                  <OccasionDropdown onChange={setOccasion} />
-                </div>
-                
-                <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1.5rem' }}>
-                  Confirm Reservation
-                </button>
-              </form>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <BookingForm 
+                  availableTimes={availableTimes} 
+                  dispatch={dispatch} 
+                  onSubmit={handleFormSubmit} 
+                />
+              </div>
             </>
           ) : (
             <div style={{ textAlign: 'center', padding: '1rem 0' }}>
@@ -96,13 +44,26 @@ function BookingPage() {
               <p className="body-paragraph" style={{ marginBottom: '2rem', fontSize: '18px' }}>
                 Your table at Little Lemon has been reserved.
               </p>
-              <div style={{ background: '#f4f4f4', padding: '2rem', borderRadius: '12px', textAlign: 'left', marginBottom: '2.5rem', lineHeight: '1.8' }}>
-                <p><strong>Date:</strong> {date}</p>
-                <p><strong>Time:</strong> {time}</p>
-                <p><strong>Guests:</strong> {guests} people</p>
-                {occasion && <p><strong>Occasion:</strong> {occasion}</p>}
+              <div 
+                style={{ 
+                  background: '#f4f4f4', 
+                  padding: '2rem', 
+                  borderRadius: '12px', 
+                  textAlign: 'left', 
+                  marginBottom: '2.5rem', 
+                  lineHeight: '1.8' 
+                }}
+              >
+                <p><strong>Date:</strong> {bookingData.date}</p>
+                <p><strong>Time:</strong> {bookingData.time}</p>
+                <p><strong>Guests:</strong> {bookingData.guests} people</p>
+                <p><strong>Occasion:</strong> {bookingData.occasion}</p>
               </div>
-              <a href="/" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block', padding: '0.8rem 3rem' }}>
+              <a 
+                href="/" 
+                className="btn-primary" 
+                style={{ textDecoration: 'none', display: 'inline-block', padding: '0.8rem 3rem' }}
+              >
                 Back to Home
               </a>
             </div>
