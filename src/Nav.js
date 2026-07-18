@@ -1,12 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function Nav() {
   return (
     <nav>
       <ul className="nav-links-container">
         <li>
-          <Link to="/" className="nav-link">HOME</Link>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} 
+            end
+          >
+            HOME
+          </NavLink>
         </li>
         <li>
           <a href="/#about" className="nav-link">ABOUT</a>
@@ -15,13 +21,23 @@ function Nav() {
           <a href="/#menu" className="nav-link">MENU</a>
         </li>
         <li>
-          <Link to="/booking" className="nav-link">RESERVATIONS</Link>
+          <NavLink 
+            to="/booking" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            RESERVATIONS
+          </NavLink>
         </li>
         <li>
           <a href="/#menu" className="nav-link">ORDER ONLINE</a>
         </li>
         <li>
-          <Link to="/" className="nav-link">LOGIN</Link>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            LOGIN
+          </NavLink>
         </li>
       </ul>
     </nav>

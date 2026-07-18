@@ -117,7 +117,9 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
       
       {/* Date Input field */}
       <div style={{ display: 'grid', gap: '5px' }}>
-        <label className="form-label" htmlFor="res-date">Choose date</label>
+        <label className="form-label" htmlFor="res-date">
+          Choose date <span style={{ fontSize: '12px', color: '#888888', fontWeight: 'normal' }}>(Required)</span>
+        </label>
         <input 
           type="date" 
           id="res-date" 
@@ -137,7 +139,9 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
 
       {/* Time Input select element */}
       <div style={{ display: 'grid', gap: '5px' }}>
-        <label className="form-label" htmlFor="res-time">Choose time</label>
+        <label className="form-label" htmlFor="res-time">
+          Choose time <span style={{ fontSize: '12px', color: '#888888', fontWeight: 'normal' }}>(Required)</span>
+        </label>
         <select 
           id="res-time" 
           className="form-input"
@@ -161,7 +165,9 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
 
       {/* Guests Number Input field */}
       <div style={{ display: 'grid', gap: '5px' }}>
-        <label className="form-label" htmlFor="guests">Number of guests</label>
+        <label className="form-label" htmlFor="guests">
+          Number of guests <span style={{ fontSize: '12px', color: '#888888', fontWeight: 'normal' }}>(1 to 10 guests)</span>
+        </label>
         <input 
           type="number" 
           placeholder="1" 
@@ -184,7 +190,9 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
 
       {/* Occasion Select Element */}
       <div style={{ display: 'grid', gap: '5px' }}>
-        <label className="form-label" htmlFor="occasion">Occasion</label>
+        <label className="form-label" htmlFor="occasion">
+          Occasion <span style={{ fontSize: '12px', color: '#888888', fontWeight: 'normal' }}>(Select option)</span>
+        </label>
         <select 
           id="occasion" 
           className="form-input"
